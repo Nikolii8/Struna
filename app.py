@@ -3,22 +3,23 @@ from flask import Flask, jsonify, request, send_from_directory
 import os
 from supabase import create_client, Client
 
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY") or os.getenv("SUPABASE_KEY")
+# Вземаме Supabase ключовете от environment variables
+SUPABASE_URL = os.environ.get("SUPABASE_URL")
+SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY") or os.environ.get("SUPABASE_KEY")
 if not SUPABASE_URL or not SUPABASE_KEY:
-    raise RuntimeError("Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in .env")
+    raise RuntimeError("Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in Environment Variables")
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 app = Flask(__name__, static_folder="static")
 
 def ensure_counter_row():
-    # Проверява дали има ред с id=1, и ако няма - вкарва начален ред
+    """Проверява дали има ред с id=1, ако няма - създава го"""
     resp = supabase.table("counter").select("id").eq("id", 1).execute()
     rows = resp.data or []
     if not rows:
         supabase.table("counter").insert({"id": 1, "clicks": 0}).execute()
 
-# Увери се, че редът съществува при стартиране
+# Уверяваме се, че редът съществува при стартиране
 ensure_counter_row()
 
 @app.route("/count", methods=["GET"])
@@ -34,7 +35,6 @@ def get_count():
 @app.route("/click", methods=["POST"])
 def add_click():
     try:
-        # Четем текущия clicks, увеличаваме и записваме обратно
         resp = supabase.table("counter").select("clicks").eq("id", 1).execute()
         rows = resp.data or []
         clicks = rows[0]["clicks"] if rows else 0
@@ -56,11 +56,15 @@ def add_email():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# Serve static and html files (както преди)
-@app.route("/", defaults={"path": "index.html"})
+# Serve static and HTML files
+@app.route("/", defaults={"path": ""})
 @app.route("/<path:path>")
 def serve_frontend(path):
-    return send_from_directory(os.getcwd(), path)
+    if path == "":
+        path = "index.html"
+    return send_from_directory("static", path)
 
+# За локално тестване
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 8080))  # Railway задава PORT
+    app.run(host="0.0.0.0", port=port)
