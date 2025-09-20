@@ -1,4 +1,4 @@
-flask
-supabase
-gunicorn
-python-dotenv
+Flask==2.3.4
+gunicorn==23.0.0
+python-dotenv==1.0.0
+supabase==2.1.0   # ако използваш supabase
