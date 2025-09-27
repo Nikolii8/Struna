@@ -2,133 +2,60 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8">
-  <title>Modern Homepage</title>
-  <link rel="stylesheet" href="static/style.css">
-  <!-- Google Fonts за Podkova -->
-  <link href="https://fonts.googleapis.com/css2?family=Podkova:wght@500;700;800&display=swap" rel="stylesheet">
+  <title>Сърце за теб ❤️</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="homepage">
+<body>
+  <!-- Canvas за сърцето и частиците -->
+  <canvas id="heartCanvas"></canvas>
 
-  <!-- Декоративна grid overlay -->
-  <div class="grid-ghost"></div>
-
-  <!-- Хедър с навигация -->
-  <header class="header">
-    <div class="logo">Struna</div>
-
-    <nav class="nav">
-      <a href="index.html" class="active">Home</a>
-      <a href="about.html">About Us</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-
-  </header>
-
-  <!-- Hero секция -->
-  <section class="hero">
-    <div class="hero-left">
-      <div class="pink-circle"></div>
-      <h1 class="headline">
-        Maintain good <span class="highlight"><span class="highlight-bg"></span><span class="highlight-text">posture </span></span> every day
-      </h1>
-      <button class="btn btn-learn">Learn More</button>
-    </div>
-
-    <div class="hero-right">
-      <div class="image-circle">
-        <img src="static/struna_pic.webp" alt="Hero image">
-      </div>
-    </div>
-  </section>
-
-  <!-- Декоративна линия с точки -->
-  <div class="divider-dots"></div>
-
-  <!-- CTA секция -->
-  <section class="cta-section">
-    <h2 class="cta-title">Join Us Now</h2>
-    <p class="cta-sub">Your success starts here</p>
-    <div class="cta-actions">
-      <button class="btn btn-solid">Buy now</button>
-    </div>
-  </section>
-
-<script>
-  const counterEl = document.getElementById("buyCounter");
-
-  // Зареждаме брояча при отваряне на страницата
-  async function loadCount() {
-    try {
-      const res = await fetch("/count");
-      const data = await res.json();
-      if (counterEl) counterEl.textContent = data.clicks;
-    } catch (error) {
-      console.error("Error loading count:", error);
-    }
-  }
-
-  document.querySelector(".btn-solid").addEventListener("click", async () => {
-    try {
-      // Увеличаваме брояча
-      const res = await fetch("/click", { method: "POST" });
-      const data = await res.json();
-      if (counterEl) counterEl.textContent = data.clicks;
-
-      // Pop-up за имейл
-      const email = prompt("Sorry, this product is out of stock. Enter your email to be notified when it's available:");
-      if (email) {
-        await fetch("/waitlist", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email })
-        });
-        alert("Thank you! We will notify you when the product is back in stock.");
-      }
-
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  });
-
-  loadCount();
-</script>
-
-
-
-  <!-- Вълна -->
-  <div class="wave"></div>
-
-  <!-- Services -->
-  <section class="services">
-    <h2 class="services-title">Our Solution</h2>
-
-    <div class="service service-a">
-      <div class="service-copy">
-        <span class="service-chip">Device</span>
-        <p>Our posture monitoring project is an intelligent system embedded in a tank top, providing discreet and comfortable real-time posture tracking and improvement.</p>
-      </div>
-      <div class="service-media1">
-        <img src="static/struna_pic.webp" alt="Service 1">
-      </div>
-    </div>
-
-    <div class="service service-b">
-      <div class="service-copy">
-        <span class="service-chip">App</span>
-        <p>The companion app for the device lets users monitor their posture in real time, track the duration of correct and incorrect posture, and receive timely notifications to help them improve.</p>
-      </div>
-      <div class="service-media2">
-        <img src="static/telefon1.jpg" alt="Service 2">
-      </div>
+  <!-- Галерия със снимки (скрита в началото) -->
+  <section id="gallery" class="gallery hidden">
+    <div class="collage">
+      <img src="us/pic1.jpg" alt="Снимка 1">
+      <img src="us/pic2.jpg" alt="Снимка 2">
+      <img src="us/pic3.jpg" alt="Снимка 3">
+      <img src="us/pic4.jpg" alt="Снимка 4">
+      <img src="us/pic5.jpg" alt="Снимка 5">
+      <img src="us/pic6.jpg" alt="Снимка 6">
+      <img src="us/pic7.jpg" alt="Снимка 7">
+      <img src="us/pic8.jpg" alt="Снимка 8">
+      <img src="us/pic9.jpg" alt="Снимка 9">
+      <img src="us/pic10.jpg" alt="Снимка 10">
+      <img src="us/pic11.jpg" alt="Снимка 11">
+      <img src="us/pic12.jpg" alt="Снимка 12">
+      <img src="us/pic13.jpg" alt="Снимка 13">
+      <img src="us/pic14.jpg" alt="Снимка 14">
+      <img src="us/pic15.jpg" alt="Снимка 15">
+      <img src="us/pic16.jpg" alt="Снимка 16">
+      <img src="us/pic17.jpg" alt="Снимка 17">
+      <img src="us/pic18.jpg" alt="Снимка 18">
+      <img src="us/pic19.jpg" alt="Снимка 19">
+      <img src="us/pic20.jpg" alt="Снимка 20">
+      <img src="us/pic21.jpg" alt="Снимка 21">
+      <img src="us/pic22.jpg" alt="Снимка 22">
+      <img src="us/pic23.jpg" alt="Снимка 23">
+      <img src="us/pic24.jpg" alt="Снимка 24">
+      <img src="us/pic25.jpg" alt="Снимка 25">
+      <img src="us/pic26.jpg" alt="Снимка 26">
+      <img src="us/pic27.jpg" alt="Снимка 27">
+      <img src="us/pic28.jpg" alt="Снимка 28">
+      <img src="us/pic29.jpg" alt="Снимка 29">
+      <img src="us/pic30.jpg" alt="Снимка 30">
+      <img src="us/pic31.jpg" alt="Снимка 31">
+      <img src="us/pic32.jpg" alt="Снимка 32">
+      <img src="us/pic33.jpg" alt="Снимка 33">
+      <img src="us/pic34.jpg" alt="Снимка 34">
+      <img src="us/pic35.jpg" alt="Снимка 35">
+      <img src="us/pic36.jpg" alt="Снимка 36">
+      <img src="us/pic37.jpg" alt="Снимка 37">
+      <img src="us/pic38.jpg" alt="Снимка 38">
+      <img src="us/pic39.jpg" alt="Снимка 39">
+      <img src="us/pic40.jpg" alt="Снимка 40">
+      <img src="us/pic41.jpg" alt="Снимка 41">
     </div>
   </section>
-
-  <!-- Декоративни арки -->
-  <div class="bottom-arcs">
-    <div class="arc arc-green"></div>
-    <div class="arc arc-pink"></div>
-    <div class="arc arc-magenta"></div>
-  </div>
-
+  <audio id="bgMusic" src="audio/yellow.mp3" autoplay loop></audio>
+  <script src="script.js"></script>
 </body>
 </html>
